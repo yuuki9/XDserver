@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='utf-8'?>
+	<Config>
+		<SET debug="false"/>
+
+
+		<Layers>
+			
+			<Type name="Real3D" path="/data/buildmap" ext="dat" direct="true" flag="true">
+				<Layer name="facility_vaiv_bamsum" bound="123.12,456.45,678.67,901" min="0" max="14" text="신규 밤섬 50%" date="2022-08" />
+				<Layer name="facility_bd08_05" bound="123.12,456.45,678.67,901" min="0" max="14" text="패스트파이브 외 5개 건물 50%" date="2022-08" />
+				<Layer name="facility_build_vw" bound="123.12,456.45,678.67,901" min="0" max="15" text="가상세계 서울 전체 건물" date="2022-08" />
+				<Layer name="facility_build_user" bound="123.12,456.45,678.67,901" min="0" max="15" text="사용자 건물" date="2022-09" />
+			</Type> 
+
+			<Type name="Image" path="/data/buildmap" ext="png" direct="true">
+				<Layer name="hybrid_lsmd08_18" bound="123.12,456.45,678.67,901" min="0" max="21" text="18개 필지 조감도" date="2022-08" />
+			</Type> 	
+		
+		</Layers>
+	</Config>

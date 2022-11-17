@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='utf-8'?>
+	<Config>
+		<SET debug="false"/>
+
+
+<!-- 
+	[Layers]
+	서비스 할 Layer를 정의합니다.
+		다수의 <Type><Layer/><Type/> 로 구성되어질 수 있습니다.  
+-->		
+
+		<Layers>
+<!-- 
+		[Type 필드 설명]
+			name(필수)  : 그룹관리를 위한 이름(중복허용)으로 실서비스와는 관계없음
+			path(필수) : 서비스하고자 하는 <Layer> 가 위치하고 있는 상위 경로. 마지막에 / 는 생략할 것.
+			ext(필수) : <Layer> 에서 서비스 될 파일 확장자
+			<Layer> : 0개~ 다수의 서비스 레이어를 가질수 있음. 
+		
+		[Layer 필드설명]
+			name(필수) : 디렉토리상의 레이어명. [Type.path + Layer.name]으로 서비스 위치가 설정됨.
+			min(필수) : 서비스최소레벨
+			max(필수) : 서비스최고레벨
+
+			version(선택) : 관리를 위한 레이어의 버전정보
+			bound(선택) : 서비스영역 필터링을 위한 레이어바운더리 설정기능
+			text(선택) : 관리를 위한 레이어명
+			date(선택) : 관리를 위한 레이어 생성일
+			ext(선택) : <Type> 에서 지정된 기본값을 변경할 경우 현재의 Layer에서 서비스 될 파일 확장자
+-->	
+			
+			<!-- 서비스 활용 신규 구축 건물 (PROD) -->
+			
+			<Type name="Real3D" path="/data/buildmap" ext="dat" direct="true" flag="true">
+				<!--<Layer name="facility_vaiv_bamsum" bound="123.12,456.45,678.67,901" min="0" max="14" text="신규 밤섬 50%" date="2022-08" /> -->
+				<!--<Layer name="facility_bd08_05" bound="123.12,456.45,678.67,901" min="0" max="14" text="패스트파이브 외 5개 건물 50%" date="2022-08" /> -->
+				<Layer name="facility_build_vw" bound="123.12,456.45,678.67,901" min="0" max="15" text="가상세계 서울 전체 건물" date="2022-08" />
+				<Layer name="facility_build_user" bound="123.12,456.45,678.67,901" min="0" max="15" text="사용자 건물" date="2022-09" />
+			</Type> 
+
+			<Type name="Image" path="/data/buildmap" ext="png" direct="true">
+				<!--<Layer name="hybrid_lsmd08_18" bound="123.12,456.45,678.67,901" min="0" max="21" text="18개 필지 조감도" date="2022-08" />-->
+			</Type> 	
+			
+			
+			
+		</Layers>
+	</Config>

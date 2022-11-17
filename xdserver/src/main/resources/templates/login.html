@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>XDServer</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap');
+
+        * {
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+
+        body {
+            background-color: white;
+        }
+
+        .loginform {
+            margin: auto;
+            width: 300px;
+            background-color: #EEEFF1;
+            border-radius: 5px;
+            text-align: center;
+            padding: 20px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            border-radius: 5px;
+            border: none;
+        }
+
+        .in {
+            margin-bottom: 10px;
+        }
+
+        #btn {
+            background-color: #2371B0;
+            margin-bottom: 30px;
+            color: white;
+        }
+
+        a {
+            text-decoration: none;
+            color: #9B9B9B;
+            font-size: 12px;
+        }
+        
+        p {
+            text-decoration: none;
+            color: #dc143c;
+            font-size: 12px;
+        }
+        img {
+       		width: 300px;
+        
+        
+        }
+        .logo{
+            text-align: center;   	
+   			margin-top: 190px;
+             
+        }
+    </style>
+</head>
+
+<body>
+	<div class="logo">
+	<img src = "./static/img/logo1.png"/>
+	</div>
+	<div class ="loginform">
+		<form action="/XDServer/loginProc" method="post">
+			<input type="text" id="username" placeholder="아이디" class="in"
+				name="username"> <input type="password" id="password"
+				placeholder="비밀번호" class="in" name="password"> <input
+				type="submit" id="btn" value="sign in"><br>
+				<span th:if="${error}" style="width:fit-content; bottom: 15px; position: relative;">
+					<p th:text= "${exception}"></p>
+				</span>
+		</form>
+		<a href="#none">비밀번호를 잊어버리셨나요?</a>
+	</div>
+</body>
+</html>

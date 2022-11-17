@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<users>	
+	<user>
+		<info id="egis" password="$2a$12$/C56spoW5PauqfZnt0t1xuSByhyLU.AguPgzjJfokjeutlFDcMGrK" 
+		name="진호성" using="true" role="ADMIN"/>
+		<info id="sss" password="$2a$12$/C56spoW5PauqfZnt0t1xuSByhyLU.AguPgzjJfokjeutlFDcMGrK" 
+		name="진호성" using="true" role="ADMIN"/>		
+		<info id="ssss" password="$2a$12$/C56spoW5PauqfZnt0t1xuSByhyLU.AguPgzjJfokjeutlFDcMGrK" 
+		name="진호성" using="true" role="ADMIN"/>				
+	</user>		
+</users>
+
+

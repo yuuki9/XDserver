@@ -1,0 +1,15 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /XDServer
+
+debug: false
+
+spring:
+  profiles:
+    include: dev
+    
+vworld:
+ url: https://xdworld.vworld.kr
+ url2: http://xdworld.vworld.kr:8080  
+ key: 767B7ADF-10BA-3D86-AB7E-02816B5B92E9

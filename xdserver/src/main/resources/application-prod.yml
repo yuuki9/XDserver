@@ -1,0 +1,28 @@
+spring:
+# datasource:
+#  driver-class-name: org.postgresql.Driver
+#  url: jdbc:postgresql://prod-egis-rds-instance-1.cvkjvlq4r4bh.ap-northeast-2.rds.amazonaws.com:5432/egis
+#  username: postgres
+#  password: egis2022!
+ thymeleaf:
+  cache: false
+  check-template-location: true
+  prefix: classpath:/templates/
+  suffix: .html
+ mvc:
+  throw-exception-if-no-handler-found: true
+  static-path-pattern: /static/**
+ web:
+   resources:
+    static-locations: classpath:/static/
+    add-mappings: true
+    
+logging:
+ config: classpath:logging-config.xml
+ 
+# 추후 경로는 변경
+file:
+ xddata:
+  path: /data/buildmap/facility_build_vw
+  new-path: /data/buildmap/facility_build_user 
+#  linux-path: /usr/local/egis/data/build/seoul/gangnamgu/
