@@ -8,6 +8,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
@@ -20,15 +22,18 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 	@Autowired
 	LoginIdPwValidator loginIdPwValidator;
+	
+	
 	@Override
     protected void configure(HttpSecurity http) throws Exception {
 		http	
 				.csrf().disable()
-                .authorizeRequests()
+                	.authorizeRequests()             
                 	//.antMatchers("/chk").permitAll()    // LoadBalancer Chk
-                	//ROLE_ADMIN의 role을 가지고 있어야만 /XDServer 이하의 uri에 접근 가능 하게 됩니다 ROLE은 DB에 보관
+                	//ROLE_ADMIN의 role을 가지고 있어야만 /XDServer 이하의 uri에 접근 가능 하게 됩니다
                 	.antMatchers("/login**", "/web-resources/**", "/actuator/**").permitAll()
-                	.antMatchers("/admin").hasAuthority("ROLE_ADMIN") 
+                	.antMatchers("/admin/**").hasAnyRole("USER","ADMIN") 
+                	.antMatchers("/superadmin/**").hasRole("ADMIN")                 	
                     .anyRequest().authenticated()                 
                 .and()
 	                .formLogin()

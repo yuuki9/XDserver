@@ -1,13 +1,39 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<users>	
-	<user>
-		<info id="egis" password="$2a$12$/C56spoW5PauqfZnt0t1xuSByhyLU.AguPgzjJfokjeutlFDcMGrK" 
-		name="진호성" using="true" role="ADMIN"/>
-		<info id="sss" password="$2a$12$/C56spoW5PauqfZnt0t1xuSByhyLU.AguPgzjJfokjeutlFDcMGrK" 
-		name="진호성" using="true" role="ADMIN"/>		
-		<info id="ssss" password="$2a$12$/C56spoW5PauqfZnt0t1xuSByhyLU.AguPgzjJfokjeutlFDcMGrK" 
-		name="진호성" using="true" role="ADMIN"/>				
-	</user>		
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<users>
+                                                                                                   
+    
+    <user>
+                
+        
+        <info id="egis" password="$2a$12$/C56spoW5PauqfZnt0t1xuSByhyLU.AguPgzjJfokjeutlFDcMGrK" role="ADMIN" using="true"/>
+                                                                                                                                                                                                        		
+    
+        <info id="dd" password="bvb" role="ADMIN" using="true"/>
+    </user>
+                                                                                                    		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </users>
-
-

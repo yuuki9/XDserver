@@ -18,24 +18,30 @@ import com.egis.xdserver.svc.UserService;
 import com.egis.xdserver.util.Com;
 
 @RestController
-@RequestMapping("/admin")
+//@RequestMapping("/admin")
 public class UserController {
 
 	@Autowired
 	public UserService userService;
 	
-	@PostMapping("/getUserList")
+	@PostMapping("/admin/getUserList")
 	@ResponseBody 
-    public List<UserInfo> getUserList() throws Exception {		
+    public List<UserInfo> getUserList() throws Exception {
 		return userService.getUserList();
 	}
 	
-	@PostMapping("/create/account")
+	@PostMapping("/superadmin/create/account")
 	@ResponseBody 
     public HashMap<String,String> createAccount(@RequestBody Map map) throws Exception {
-		HashMap<String,String> result = new HashMap<>();
-		System.out.println(map);
-		userService.createAccount(map);
-		return result;
+		
+		return userService.createAccount(map);
+	}
+	
+	@PostMapping("/admin/update")
+	@ResponseBody 
+    public HashMap<String,String> updateAccount(@RequestBody Map map) throws Exception {
+		
+		
+		return userService.updateAccount(map);
 	}
 }

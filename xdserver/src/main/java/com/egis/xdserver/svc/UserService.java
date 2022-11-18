@@ -11,5 +11,8 @@ public interface UserService {
 	
 	List<UserInfo> getUserList() throws Exception, IOException;
 
-	void createAccount(Map map);
+	HashMap<String,String> createAccount(Map<?,?> map) throws Exception;
+
+	HashMap<String, String> updateAccount(Map<?,?> map);
+
 }

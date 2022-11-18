@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<users>
+        	
+	
+    
+    <user>
+                		
+        
+        <info id="egis" name="진호성" password="$2a$12$/C56spoW5PauqfZnt0t1xuSByhyLU.AguPgzjJfokjeutlFDcMGrK" role="ADMIN" using="true"/>
+                		
+        
+        <info id="sss" name="진호성" password="$2a$12$/C56spoW5PauqfZnt0t1xuSByhyLU.AguPgzjJfokjeutlFDcMGrK" role="ADMIN" using="true"/>
+                		
+		
+        
+        <info id="ssss" name="진호성" password="$2a$12$/C56spoW5PauqfZnt0t1xuSByhyLU.AguPgzjJfokjeutlFDcMGrK" role="ADMIN" using="true"/>
+                				
+	
+        
+        <info id="dd" password="11" role="admin" using="true"/>
+            
+        <info id="dd" password="dd" role="admin" using="true"/>
+    </user>
+        		
+
+
+</users>

@@ -5,8 +5,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,6 +25,10 @@ import javax.xml.xpath.XPathFactory;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
@@ -41,7 +43,9 @@ import com.egis.xdserver.util.Com;
 @Service
 public class UserServiceImpl implements UserService{
 	
-
+	@Autowired
+	PasswordEncoder passwordEncoder;
+	
 	//private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Override
@@ -126,16 +130,24 @@ public class UserServiceImpl implements UserService{
 	 * 계정 생성
 	 */
 	@Override
-	public void createAccount(Map map) {			
-		String xmlPath = Com.authenticationPath;
-		System.out.println(xmlPath);
+	public HashMap<String,String> createAccount(Map<?,?> map) throws Exception{			
 		
+		HashMap<String,String> resultMap = new HashMap<>();
+		
+		
+		if(userChecker((String) map.get("id"))) {
+				resultMap.put("msg", "중복된 아이디 입니다");
+				return resultMap;
+		}
+		
+		String xmlPath = Com.authenticationPath;
+			
 		try{
 			File file = new File(xmlPath);
 			if(!file.exists()){
-				System.out.println("파일없음");
+				resultMap.put("msg", "파일없음");
 				System.exit(1);
-				return;
+				return resultMap;
 			}
 		
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -145,20 +157,20 @@ public class UserServiceImpl implements UserService{
 			
 		    XPathFactory xPathFactory = XPathFactory.newInstance();
 			XPath xpath = xPathFactory.newXPath();	
-			XPathExpression expr = xpath.compile("//users/user[@name='userList']");
+			XPathExpression expr = xpath.compile("//users/user");
 
 			NodeList result = (NodeList) expr.evaluate(doc, XPathConstants.NODESET);
 			Node typeNode = result.item(0);
-			Element typeElement = (Element) typeNode;
+			Element infoElement = (Element) typeNode;
 			
-			Element LayersEle = doc.createElement("info");
-			System.out.println((String) map.get("id"));
-			LayersEle.setAttribute("id", (String) map.get("id"));
-			LayersEle.setAttribute("password", (String) map.get("pw"));
-			LayersEle.setAttribute("using", "true");
-			LayersEle.setAttribute("role",(String) map.get("roles"));
+			Element infoEle = doc.createElement("info");
+			
+			infoEle.setAttribute("id", (String) map.get("id"));
+			infoEle.setAttribute("password", passwordEncoder.encode((String) map.get("pw")));
+			infoEle.setAttribute("using", "true");
+			infoEle.setAttribute("role",(String) map.get("roles"));
 
-			typeElement.appendChild(LayersEle);
+			infoElement.appendChild(infoEle);
 			
 			DOMSource source = new DOMSource(doc);
 			Transformer transformer = TransformerFactory.newInstance().newTransformer();
@@ -171,14 +183,128 @@ public class UserServiceImpl implements UserService{
 			
 			transformer.transform(source, sr);
 			
-			BufferedWriter writer = new BufferedWriter(new FileWriter(file,false));
+			BufferedWriter writer = new BufferedWriter(new FileWriter("/D:/xdservergit/xdserver/src/main/resources/user-authentication.xml",false));
+		
 			writer.write(sw.toString());
 			writer.flush();
 			writer.close();
 			
+			BufferedWriter writer2 = new BufferedWriter(new FileWriter(xmlPath,false));
+			
+			writer2.write(sw.toString());
+			writer2.flush();
+			writer2.close();
+			
+			//reload();
 		}catch (Exception e) {
 			System.out.println(e);
+		
 		}
+		
+		resultMap.put("msg", "계정이 등록 되었습니다");
+		return resultMap;
 	}
+	/**
+	 * 계정 수정하기 
+	 */
+	
+	@Override
+	public HashMap<String, String> updateAccount(Map<?, ?> map) {
+		HashMap<String,String> resultMap = new HashMap<>();
+		if(!comparePassword((String) map.get("id"), (String) map.get("pw"))) {
+			
+			resultMap.put("msg", "기존 비밀번호가 다름니다");
+			return resultMap;	
+		}
+		
+		String xmlPath = Com.authenticationPath;
+		
+		try{
+			File file = new File(xmlPath);
+			if(!file.exists()){
+				resultMap.put("msg", "파일없음");
+				System.exit(1);
+				return resultMap;
+			}
+			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		    DocumentBuilder builder = factory.newDocumentBuilder();
+		    Document doc = builder.parse(file);
+		    doc.getDocumentElement().normalize();
+			
+		    XPathFactory xPathFactory = XPathFactory.newInstance();
+			XPath xpath = xPathFactory.newXPath();
+			
+			XPathExpression expr = xpath.compile("//info[@id='"+(String) map.get("id")+"']");
+	
+			NodeList result = (NodeList) expr.evaluate(doc, XPathConstants.NODESET);
+			Node typeNode = result.item(0);
+			Element infoElement = (Element) typeNode;
+			
+			infoElement.setAttribute("id", (String) map.get("id"));
+			infoElement.setAttribute("password", passwordEncoder.encode((String) map.get("Nw")));
+			//infoElement.setAttribute("using", "true");
+			infoElement.setAttribute("role",(String) map.get("roles"));
+	
+
+			
+			DOMSource source = new DOMSource(doc);
+			Transformer transformer = TransformerFactory.newInstance().newTransformer();
+
+			transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+			
+			StringWriter sw = new StringWriter();
+			StreamResult sr  =  new StreamResult(sw);
+			
+			transformer.transform(source, sr);
+			
+			//BufferedWriter writer = new BufferedWriter(new FileWriter(file,false));
+			//writer.write(sw.toString());
+			//writer.flush();
+			//writer.close();
+			
+		}catch (Exception e) {
+			System.out.println(e);
+		
+		}
+		resultMap.put("msg", "비밀번호 변경 완료");
+		
+		return resultMap;
+	}
+	
+	/**
+	 * 중복 아이디 체커 
+	 */
+	public boolean userChecker(String id) throws Exception {
+		
+		List<UserInfo> list = this.getUserList();
+		for(UserInfo info : list) {
+			if(id.equals(info.getId())) return true;
+		}
+				
+		return false;
+	}
+
+	/**
+	 * 실제 xml 파일로 쓰기
+	 */
+	public void writeXML(String xmlPath, StringWriter sw) throws IOException {
+		
+		BufferedWriter writer = new BufferedWriter(new FileWriter("/D:/xdservergit/xdserver/src/main/resources/user-authentication.xml",false));
+		
+		writer.write(sw.toString());
+		writer.flush();
+		writer.close();
+		
+	}
+	
+	//기존 비밀번호 비교
+	public boolean comparePassword(String id, String pw) {
+		UserInfo auth = new UserInfo(Com.authenticationPath, id);
+		BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
+		
+		return bcrypt.matches(pw, auth.getPw());
+	}
+
 }
 

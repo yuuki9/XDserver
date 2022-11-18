@@ -390,7 +390,7 @@ public class ManageServiceImpl implements ManageService {
 			XPath xpath = xPathFactory.newXPath();
 			
 			XPathExpression expr = xpath.compile("//Layer[@name='"+(String) layer.get("beforeName")+"']");
-
+			
 			NodeList result = (NodeList) expr.evaluate(doc, XPathConstants.NODESET);
 			Node layerNode = result.item(0);
 			Element layerElement = (Element) layerNode;

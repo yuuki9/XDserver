@@ -1,6 +1,8 @@
 package com.egis.xdserver.object;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -8,6 +10,9 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -20,7 +25,7 @@ import lombok.Builder;
 import lombok.Data;
 
 @Data
-public class UserInfo {
+public class UserInfo implements UserDetails{
 		
 		public String path = "";
 		private static boolean m_OS = false;			//0:AIX(UNIX), 1:Window kind
@@ -36,16 +41,15 @@ public class UserInfo {
 		
 
 		public UserInfo(String path, String insertedId){
-			
-			
+	
 			if(path == null) {
 				//logger.error("is not exist the Authentication file path : "+path);
 				System.exit(1);
 				
 			}
-			this.path = path;
+	
 			m_OS = setOS();
-			this.loadUserFile(setOSdiv(this.path) ,insertedId);	
+			this.loadUserFile(setOSdiv(path) ,insertedId);	
 		}
 		
 		@Builder
@@ -108,7 +112,7 @@ public class UserInfo {
 		}
 		
 		private void getUsersFromXML(NodeList users, String insertedId) {
-			
+			System.out.println(insertedId);
 			int len = users.getLength();
 	
 			if(len==0) {
@@ -116,8 +120,8 @@ public class UserInfo {
 			}
 			Node node_Config = users.item(0);
 			if(node_Config.getNodeType() == Node.ELEMENT_NODE){
-				Element element_config = (Element)node_Config;				
-				getUserFromXML(element_config.getElementsByTagName("info"), insertedId);						
+				Element element_config = (Element)node_Config;
+					getUserFromXML(element_config.getElementsByTagName("info"), insertedId);										
 			}	
 		}	
 
@@ -140,7 +144,7 @@ public class UserInfo {
 			if(get==null) return false; 
 			return Boolean.valueOf(get);
 		}
-		
+
 		
 		private void getUserFromXML(NodeList userList , String insertedId) {
 			// <User>목록으로부터 유저정보를 취득
@@ -149,17 +153,17 @@ public class UserInfo {
 			    for(int i=0;i<len;i++){
 			    	Node info = userList.item(i);
 			    	if(info.getNodeType() == Node.ELEMENT_NODE ){			 	    			
-			    		getCheckUserPw( (Element) info, insertedId);
-			    		
-			    	}
-			    }
-		    }else {
-		    	return;
-		    }
-		}			
-		
-		public UserInfo getCheckUserPw(Element userInfo, String insertedId) {			
-			
+						getCheckUserPw((Element) info, insertedId);
+
+					}
+						}
+					} else {
+						return;
+					}
+		}
+
+		public UserInfo getCheckUserPw(Element userInfo, String insertedId) {
+
 			String id = getParam(userInfo, "id");
 			String password = getParam(userInfo, "password");
 			boolean using = getParamBool(userInfo, "using");
@@ -175,7 +179,53 @@ public class UserInfo {
 
 			}
 
-			return null;
+			return this;
 		}
-			 
-}
+
+		@Override
+		public Collection<? extends GrantedAuthority> getAuthorities() {
+			 Collection<GrantedAuthority> authorities = new ArrayList<>();
+
+	        for(String role : roles.split(",")){
+	            authorities.add(new SimpleGrantedAuthority(role));
+	        }
+	        return authorities;
+		}
+
+		@Override
+		public String getPassword() {
+			// TODO Auto-generated method stub
+			return this.pw;
+		}
+
+		@Override
+		public String getUsername() {
+			// TODO Auto-generated method stub
+			return this.id;
+		}
+
+		@Override
+		public boolean isAccountNonExpired() {
+			// TODO Auto-generated method stub
+			return true;
+		}
+
+		@Override
+		public boolean isAccountNonLocked() {
+			// TODO Auto-generated method stub
+			return true;
+		}
+
+		@Override
+		public boolean isCredentialsNonExpired() {
+			// TODO Auto-generated method stub
+			return true;
+		}
+
+		@Override
+		public boolean isEnabled() {
+			// TODO Auto-generated method stub
+			return true;
+		}
+
+	}

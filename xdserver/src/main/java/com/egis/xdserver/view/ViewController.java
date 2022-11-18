@@ -48,10 +48,13 @@ public class ViewController {
 	// web view
 	@GetMapping("/admin/web")
     public String web(@AuthenticationPrincipal User user, Model model) throws Exception {
+
+		Object[] obj = user.getAuthorities().toArray();
+		String[] role = obj[0].toString().split("_");
 		
 		model.addAttribute("id", user.getUsername()); 
-		model.addAttribute("roles", user.getAuthorities()); 
-
+		model.addAttribute("roles", role[1]); 
+		 
 		return "web";
     }
 	

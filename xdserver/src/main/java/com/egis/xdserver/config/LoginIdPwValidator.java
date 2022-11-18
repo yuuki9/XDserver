@@ -15,17 +15,16 @@ import com.egis.xdserver.object.UserInfo;
 import com.egis.xdserver.util.Com;
 
 @Service
-public class LoginIdPwValidator implements UserDetailsService {
-	
-	@Bean
-	public PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
+public class LoginIdPwValidator implements UserDetailsService {	
 		
 	//@Bean
     // public PasswordEncoder passwordEncoder() {
     //    return new SHA512PasswordEncoder();
     //}
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
 	
     @Override
     public UserDetails loadUserByUsername(String insertedId) throws UsernameNotFoundException {
@@ -38,7 +37,7 @@ public class LoginIdPwValidator implements UserDetailsService {
     	
        String pw = auth.getPw();
        String roles = auth.getRoles();
- 
+     
        return User.builder()
                 .username(insertedId)
                 .password(pw)
